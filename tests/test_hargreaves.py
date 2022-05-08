@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import numpy as np
-import hargreaves
+import pet_equations.hargreaves as hargreaves
 
 
 class TestHargreaves(unittest.TestCase):

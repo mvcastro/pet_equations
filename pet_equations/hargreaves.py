@@ -1,8 +1,8 @@
 import numpy as np
 from numpy.typing import NDArray
 
-import meteorological_vars as mv
-from checking import _check_array_sizes, _check_latitude, _check_param_type
+import pet_equations.meteorological_vars as mv
+from pet_equations.checking import _check_array_sizes, _check_latitude, _check_param_type
 
 
 def calculate(latitude: NDArray[np.float64] | int | float,

@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from meteorological_vars import (relative_distance_earth_sun, solar_declination,
+from pet_equations.meteorological_vars import (relative_distance_earth_sun, solar_declination,
                                  sunset_hour_angle, extra_terrestrial_radiation)
 
 DOY = np.array(246)
