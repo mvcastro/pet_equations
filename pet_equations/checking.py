@@ -1,6 +1,7 @@
 from typing import Any, List
 
 import numpy as np
+import pandas as pd
 from numpy.typing import NDArray
 
 
@@ -18,8 +19,8 @@ def _check_param_type(param: Any) -> NDArray[Any]:
     """
     if isinstance(param, (int, float)):
         param = np.array(param)
-    elif not isinstance(param, np.ndarray):
-        raise ValueError('Parameters must be of type float or ndarray')
+    elif not isinstance(param, (np.ndarray, pd.Series)):
+        raise ValueError('Parameters must be of type float or ndarray or Series')
     return param
 
 

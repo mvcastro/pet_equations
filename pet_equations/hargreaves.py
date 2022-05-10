@@ -1,15 +1,17 @@
 import numpy as np
+import pandas as pd
 from numpy.typing import NDArray
 
 import pet_equations.meteorological_vars as mv
-from pet_equations.checking import _check_array_sizes, _check_latitude, _check_param_type
+from pet_equations.checking import (_check_array_sizes, _check_latitude,
+                                    _check_param_type)
 
 
-def calculate(latitude: NDArray[np.float64] | int | float,
-              tmin: NDArray[np.float64] | int | float,
-              tmax: NDArray[np.float64] | int | float,
-              tmean: NDArray[np.float64] | int | float,
-              doy: NDArray[np.int64] | int | float) -> NDArray[np.float64]:
+def calculate(latitude: NDArray[np.float64] | pd.Series | int | float,
+              tmin: NDArray[np.float64] | pd.Series | int | float,
+              tmax: NDArray[np.float64] | pd.Series | int | float,
+              tmean: NDArray[np.float64] | pd.Series | int | float,
+              doy: NDArray[np.int64] | pd.Series | int | float) -> NDArray[np.float64]:
     """Hargreaves equation - Emperical (Temperature-Based)
 
         ETo = 0.0023 * (Tmean + 17.8) * ((Tmax - Tmin) ** 0.5) *  Ra
@@ -55,5 +57,6 @@ def calculate(latitude: NDArray[np.float64] | int | float,
     # Extra-Terrestrial Radiation (mm/day)
     et_ra = mv.extra_terrestrial_radiation(
         rel_dist_es, sha, lat_rad, solar_dec)
-    
-    return 0.0023 * et_ra * np.sqrt(tmax - tmin) * (tmean + 17.8) # type: ignore
+
+    # type: ignore
+    return 0.0023 * et_ra * np.sqrt(tmax - tmin) * (tmean + 17.8)
