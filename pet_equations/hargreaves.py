@@ -1,10 +1,16 @@
+"""Hargreaves equation - Emperical (Temperature-Based)
+
+        Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
+         computing crop water requirements. FAO Irrigation and Drainage Paper 56.
+         United Nations, Rome.
+"""
+
 import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
 
-import pet_equations.meteorological_vars as mv
-from pet_equations.checking import (_check_array_sizes, _check_latitude,
-                                    _check_param_type)
+import meteorological_vars as mv
+from checking import _check_array_sizes, _check_latitude, _check_param_type
 
 
 def calculate(latitude: NDArray[np.float64] | pd.Series | int | float,
@@ -58,5 +64,4 @@ def calculate(latitude: NDArray[np.float64] | pd.Series | int | float,
     et_ra = mv.extra_terrestrial_radiation(
         rel_dist_es, sha, lat_rad, solar_dec)
 
-    # type: ignore
-    return 0.0023 * et_ra * np.sqrt(tmax - tmin) * (tmean + 17.8)
+    return 0.0023 * et_ra * np.sqrt(tmax - tmin) * (tmean + 17.8) # type: ignore

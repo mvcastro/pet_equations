@@ -1,3 +1,5 @@
+"""Module functions to check the correct type parameters """
+
 from typing import Any, List
 
 import numpy as np
@@ -20,7 +22,8 @@ def _check_param_type(param: Any) -> NDArray[Any]:
     if isinstance(param, (int, float)):
         param = np.array(param)
     elif not isinstance(param, (np.ndarray, pd.Series)):
-        raise ValueError('Parameters must be of type float or ndarray or Series')
+        raise ValueError(
+            'Parameters must be of type float or ndarray or Series')
     return param
 
 
