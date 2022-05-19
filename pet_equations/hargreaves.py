@@ -7,18 +7,18 @@
 
 import numpy as np
 import pandas as pd
-from numpy.typing import NDArray
+from numpy.typing import NDArray, ArrayLike
 
 from pet_equations import meteorological_vars as mv
 from pet_equations.checking import (_check_array_sizes, _check_latitude,
-                                    _check_param_type)
+                                    _check_param_float_type, _check_param_int_type)
 
 
-def calculate(latitude: NDArray[np.float64] | pd.Series | int | float,
-              tmin: NDArray[np.float64] | pd.Series | int | float,
-              tmax: NDArray[np.float64] | pd.Series | int | float,
-              tmean: NDArray[np.float64] | pd.Series | int | float,
-              doy: NDArray[np.int64] | pd.Series | int | float) -> NDArray[np.float64]:
+def calculate(latitude: ArrayLike | int | float,
+              tmin: ArrayLike | int | float,
+              tmax: ArrayLike | int | float,
+              tmean: ArrayLike | int | float,
+              doy: ArrayLike | int) -> NDArray[np.float64]:
     """Hargreaves equation - Emperical (Temperature-Based)
 
         ETo = 0.0023 * (Tmean + 17.8) * ((Tmax - Tmin) ** 0.5) *  Ra
@@ -32,17 +32,17 @@ def calculate(latitude: NDArray[np.float64] | pd.Series | int | float,
         tmin (NDArray[np.float64]): Minimum Temperatue (°C)
         tmax (NDArray[np.float64]): Maximum Temperature (°C)
         tmean (NDArray[np.float64]): Mean air temperature (°C)
-        doy (NDArray[np.float64]): Day of Year betweem 1 and 365 or 366.
+        doy (NDArray[np.int64]): Day of Year betweem 1 and 365 or 366.
 
     Returns:
         NDArray[np.float64]: ETo (mm/day).
     """
 
-    latitude = _check_param_type(latitude)
-    tmin = _check_param_type(tmin)
-    tmax = _check_param_type(tmax)
-    tmean = _check_param_type(tmean)
-    doy = _check_param_type(doy)
+    latitude = _check_param_float_type(latitude)
+    tmin = _check_param_float_type(tmin)
+    tmax = _check_param_float_type(tmax)
+    tmean = _check_param_float_type(tmean)
+    doy = _check_param_int_type(doy)
 
     max_size = max(latitude.size, tmin.size, tmax.size, doy.size)
 
