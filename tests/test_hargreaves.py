@@ -1,15 +1,11 @@
-"""Teste da equação de HArgreaves
-
-    Raises:
-        exception: _description_
-    """
+"""Teste da equação de HArgreaves"""
 
 import unittest
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import pet_equations.hargreaves as hargreaves
+from pet_equations import hargreaves # type: ignore
 
 
 class TestHargreaves(unittest.TestCase):
@@ -44,7 +40,7 @@ class TestHargreaves(unittest.TestCase):
         try:
             hargreaves.calculate(
                 latitude, tmin, tmax, (tmin + tmax) / 2, doy)
-        except Exception as error:
+        except ValueError as error:
             self.fail(f"myFunc() raised ExceptionType unexpectedly! - {error}")
 
     def test_hargreaves_exeception(self):
