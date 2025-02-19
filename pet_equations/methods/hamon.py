@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from pet_equations.checking import _check_array_sizes, _check_param_type
-from pet_equations.meteorological_vars import (daylight_hours, saturation_vapor_pressure,
+from pet_equations.methods_parameters.astronomical_variables import (daylight_hours, saturation_vapor_pressure,
                                  solar_declination, sunset_hour_angle)
 
 

@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pet-equations"
+version = "0.1.0"
+description = "Equations for Estimate Potential Evapotranspiration"
+authors = ["mvcastro <mvcastro1975@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "^2.2.2"
+pandas = "^2.2.3"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

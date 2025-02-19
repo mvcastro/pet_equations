@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from numpy.typing import NDArray, ArrayLike
 
-from pet_equations import meteorological_vars as mv
+from pet_equations.methods_parameters import astronomical_variables as mv
 from pet_equations.checking import (_check_array_sizes, _check_latitude,
                                     _check_param_float_type, _check_param_int_type)
 
@@ -21,7 +21,7 @@ def calculate(latitude: ArrayLike | int | float,
               doy: ArrayLike | int) -> NDArray[np.float64]:
     """Hargreaves equation - Emperical (Temperature-Based)
 
-        ETo = 0.0023 * (Tmean + 17.8) * ((Tmax - Tmin) ** 0.5) *  Ra
+        ETo = 0.0023 * (Tmean + 17.8) * ((Tmax - Tmin) ** 0.5) * Ra
 
         Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
          computing crop water requirements. FAO Irrigation and Drainage Paper 56.

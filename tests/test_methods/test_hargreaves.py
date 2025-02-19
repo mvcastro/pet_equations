@@ -5,7 +5,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-from pet_equations import hargreaves # type: ignore
+from pet_equations.methods import hargreaves
 
 
 class TestHargreaves(unittest.TestCase):
@@ -26,7 +26,7 @@ class TestHargreaves(unittest.TestCase):
 
         self.assertAlmostEqual(
             hargreaves.calculate(
-                latitude, tmin, tmax, (tmin + tmax) / 2, doy), 5.0, delta=0.1)  # type: ignore
+                latitude, tmin, tmax, (tmin + tmax) / 2, doy), 5.0, delta=0.1)
 
     def test_hargreaves_series(self):
         """Hargreaves - Testing the equation"""
@@ -52,5 +52,7 @@ class TestHargreaves(unittest.TestCase):
         tmin = 14.8
 
         with self.assertRaises(ValueError):
-            hargreaves.calculate(latitude, tmin, tmax,  # type: ignore
-                                 (tmin + tmax) / 2, doy)  # type: ignore
+            hargreaves.calculate(
+                latitude, tmin, tmax,
+                (tmin + tmax) / 2, doy
+            )  
