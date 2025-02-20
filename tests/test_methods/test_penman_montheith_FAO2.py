@@ -88,7 +88,7 @@ class TestPenmanMontheith(unittest.TestCase):
         rel_dist_es = avars.relative_distance_earth_sun(doy=np.array(doy))
         solar_dec = avars.solar_declination(doy=np.array(doy))
         sha = avars.sunset_hour_angle(latitude=lat_rad, solar_dec=np.array(solar_dec))
-        ra = avars.extra_terrestrial_radiation(
+        ra = rvars.extra_terrestrial_radiation(
             rel_dist_es=rel_dist_es,
             sha=sha,
             latitude=lat_rad,

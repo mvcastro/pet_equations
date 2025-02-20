@@ -74,6 +74,9 @@ def extra_terrestrial_radiation(
     solar_dec: NDArray[np.float64],
 ) -> NDArray[np.float64]:
     """Extra-Terrestrial Radiation (Ra)
+       Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
+       computing crop water requirements. FAO Irrigation and Drainage Paper 56.
+       United Nations, Rome.
 
     Args:
         rel_dist_es (NDArray[np.float64]): relative distance earth-sun.
@@ -82,16 +85,15 @@ def extra_terrestrial_radiation(
         solar_dec (NDArray[np.float64]): solar declination [radians]
 
     Returns:
-        NDArray[np.float64]: Extra-Terrestrial Radiation (mm/day).
+        NDArray[np.float64]: Extra-Terrestrial Radiation (MJ.m-2.day-1).
     """
+    
+    # solar constant [MJ.m-2.min-1]
+    Gsc = 0.0820
 
-    ra = (
-        (118.08 / np.pi)
-        * rel_dist_es
-        * (
+    ra = (24 * 60 / np.pi) * Gsc * rel_dist_es * (
             sha * np.sin(latitude) * np.sin(solar_dec)
             + np.cos(latitude) * np.cos(solar_dec) * np.sin(sha)
         )
-    )
 
     return ra

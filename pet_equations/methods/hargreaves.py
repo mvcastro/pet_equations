@@ -1,24 +1,31 @@
 """Hargreaves equation - Emperical (Temperature-Based)
 
-        Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
-         computing crop water requirements. FAO Irrigation and Drainage Paper 56.
-         United Nations, Rome.
+Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
+ computing crop water requirements. FAO Irrigation and Drainage Paper 56.
+ United Nations, Rome.
 """
 
 import numpy as np
 import pandas as pd
-from numpy.typing import NDArray, ArrayLike
+from numpy.typing import ArrayLike, NDArray
 
-from pet_equations.methods_parameters import astronomical_variables as mv
-from pet_equations.checking import (_check_array_sizes, _check_latitude,
-                                    _check_param_float_type, _check_param_int_type)
+from pet_equations.checking import (
+    _check_array_sizes,
+    _check_latitude,
+    _check_param_float_type,
+    _check_param_int_type,
+)
+import pet_equations.methods_parameters.astronomical_variables as avars
+import pet_equations.methods_parameters.radiation_variables as rvars
 
 
-def calculate(latitude: ArrayLike | int | float,
-              tmin: ArrayLike | int | float,
-              tmax: ArrayLike | int | float,
-              tmean: ArrayLike | int | float,
-              doy: ArrayLike | int) -> NDArray[np.float64]:
+def calculate(
+    latitude: ArrayLike | int | float,
+    tmin: ArrayLike | int | float,
+    tmax: ArrayLike | int | float,
+    tmean: ArrayLike | int | float,
+    doy: ArrayLike | int,
+) -> NDArray[np.float64]:
     """Hargreaves equation - Emperical (Temperature-Based)
 
         ETo = 0.0023 * (Tmean + 17.8) * ((Tmax - Tmin) ** 0.5) * Ra
@@ -53,17 +60,21 @@ def calculate(latitude: ArrayLike | int | float,
     lat_rad = np.deg2rad(latitude)
 
     # Solar Declination (radians)
-    solar_dec = mv.solar_declination(doy)
+    solar_dec = avars.solar_declination(doy)
 
     # sunset hour angle (radians)
-    sha = mv.sunset_hour_angle(lat_rad, solar_dec)
+    sha = avars.sunset_hour_angle(lat_rad, solar_dec)
 
     # Relative distance earth-sun
-    rel_dist_es = mv.relative_distance_earth_sun(doy)
+    rel_dist_es = avars.relative_distance_earth_sun(doy)
 
     # Extra-Terrestrial Radiation (mm/day)
-    et_ra = mv.extra_terrestrial_radiation(
-        rel_dist_es, sha, lat_rad, solar_dec)
+    et_ra = rvars.extra_terrestrial_radiation(
+        rel_dist_es=rel_dist_es,
+        sha=sha,
+        latitude=lat_rad,
+        solar_dec=solar_dec
+    )
 
-    # type: ignore
-    return 0.0023 * et_ra * np.sqrt(tmax - tmin) * (tmean + 17.8)
+    return 0.0023 * (et_ra * 0.408)  * np.sqrt(tmax - tmin) * (tmean + 17.8)
+
