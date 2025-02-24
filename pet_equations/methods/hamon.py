@@ -4,8 +4,12 @@ import numpy as np
 from numpy.typing import NDArray
 
 from pet_equations.checking import _check_array_sizes, _check_param_type
-from pet_equations.methods_parameters.astronomical_variables import (daylight_hours, saturation_vapor_pressure,
-                                 solar_declination, sunset_hour_angle)
+from pet_equations.methods_parameters.astronomical_variables import (
+    daylight_hours,
+    saturation_vapor_pressure,
+    solar_declination,
+    sunset_hour_angle,
+)
 
 
 def calculate(temp_c: NDArray[np.float64] | int | float,
@@ -65,7 +69,9 @@ def calculate(temp_c: NDArray[np.float64] | int | float,
         sha = sunset_hour_angle(lat_rad, solar_dec)
         d_hours = daylight_hours(sha)
 
-    pet = np.where(temp_c < 0.0, 0.0,
-                   kpec * 0.165 * (d_hours / 12) * 216.7 * (svp / (temp_c + 273.3)))
+    pet = np.where(
+        temp_c < 0.0, 0.0,
+        kpec * 0.165 * (d_hours / 12) * 216.7 * (svp / (temp_c + 273.3))
+    )
 
     return pet

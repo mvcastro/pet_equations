@@ -85,7 +85,7 @@ class TestPenmanMontheith(unittest.TestCase):
         """Testing Extra-terrestrial Radiation Equation (Ra)"""
         doy = 288
         lat_rad = np.deg2rad(self.LATITUDE)
-        rel_dist_es = avars.relative_distance_earth_sun(doy=np.array(doy))
+        rel_dist_es = avars.inverse_relative_distance_earth_sun(doy=np.array(doy))
         solar_dec = avars.solar_declination(doy=np.array(doy))
         sha = avars.sunset_hour_angle(latitude=lat_rad, solar_dec=np.array(solar_dec))
         ra = rvars.extra_terrestrial_radiation(
@@ -100,7 +100,7 @@ class TestPenmanMontheith(unittest.TestCase):
         """Testing Clear Sky Shortwave Radiation Equation (Rso)"""
         doy = 288
         lat_rad = np.deg2rad(self.LATITUDE)
-        rel_dist_es = avars.relative_distance_earth_sun(doy=np.array(doy))
+        rel_dist_es = avars.inverse_relative_distance_earth_sun(doy=np.array(doy))
         solar_dec = avars.solar_declination(doy=np.array(doy))
         sha = avars.sunset_hour_angle(latitude=lat_rad, solar_dec=np.array(solar_dec))
         ra = rvars.extra_terrestrial_radiation(
@@ -119,7 +119,7 @@ class TestPenmanMontheith(unittest.TestCase):
 
         doy = 288
         lat_rad = np.deg2rad(self.LATITUDE)
-        rel_dist_es = avars.relative_distance_earth_sun(doy=np.array(doy))
+        rel_dist_es = avars.inverse_relative_distance_earth_sun(doy=np.array(doy))
         solar_dec = avars.solar_declination(doy=np.array(doy))
         sha = avars.sunset_hour_angle(latitude=lat_rad, solar_dec=np.array(solar_dec))
         ra = rvars.extra_terrestrial_radiation(
@@ -138,19 +138,25 @@ class TestPenmanMontheith(unittest.TestCase):
             ea=ea,
         )
         self.assertAlmostEqual(rnl, 2.06, delta=0.01)
-
+        
     def test_penman_monteith_fao_equation(self):
+        
+        atm_p = mvars.atmospheric_pressure(altitude=np.array(self.ALTITUDE))
+        psy_const = mvars.psychrometric_constant(atmospheric_pressure=atm_p)
+        es = mvars.saturation_vapor_pressure(temperature=np.array(self.TMEAN))
+        ea = mvars.actual_vapour_pressure(es=es, rhmean=np.array(self.UR))
+        svp_delta = mvars.slope_saturation_vapour_pressure_curve(
+            temperature=np.array(self.TMEAN)
+        )
+
         eto = pmFAO.calculate(
-            tmax=np.array(self.TMAX),
-            tmin=np.array(self.TMIN),
             tmean=np.array(self.TMEAN),
+            delta=svp_delta,
+            es=es,
+            ea=ea,
+            psi_const=psy_const,
             rn=np.array(self.RN),
-            rhmean=np.array(self.UR),
             u2=np.array(self.U2),
-            altitude=self.ALTITUDE,
-            latitude=np.deg2rad(self.LATITUDE),
-            doy=np.array(288),
             g=np.array(self.G),
         )
-        self.assertAlmostEqual(eto, 3.79, delta=0.01)
         self.assertAlmostEqual(eto, 3.79, delta=0.01)

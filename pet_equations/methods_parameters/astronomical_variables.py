@@ -34,10 +34,10 @@ def sunset_hour_angle(
         NDArray[np.float64]: Sunset Hour Angle (radians)
     """
     sha = np.arccos(-np.tan(latitude) * np.tan(solar_dec))
-    return np.array(sha)
+    return sha
 
 
-def relative_distance_earth_sun(doy: NDArray[np.int64]) -> NDArray[np.float64]:
+def inverse_relative_distance_earth_sun(doy: NDArray[np.int64]) -> NDArray[np.float64]:
     """Inverse Relative Distance Earth-Sun - dr (radians).
         Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
          computing crop water requirements. FAO Irrigation and Drainage Paper 56.
@@ -66,9 +66,6 @@ def solar_declination(doy: NDArray[np.int64]) -> NDArray[np.float64]:
     """
     solar_dec = 0.409 * np.sin(2 * np.pi * doy / 365 - 1.39)
     return solar_dec
-
-
-
 
 
 def is_leap_year(year: int) -> bool:

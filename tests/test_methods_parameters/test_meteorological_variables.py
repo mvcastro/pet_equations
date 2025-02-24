@@ -54,10 +54,17 @@ class TestMeteorologicalVariables(unittest.TestCase):
         self.assertAlmostEqual(svp_delta, 0.189, delta=0.01)
 
     def test_actual_vapour_pressure(self):
-        """Testing Actual Vapour Pressure Equation (ea) - pg 39 - Example 5"""
+        """Testing Actual Vapour Pressure Equation (ea) - Example 5 - pg.39"""
         tmax = np.array(25.0)
         tmin = np.array(18.0)
         rhmean = np.array((82 + 54) / 2)
         es = atm.mean_saturation_vapor_pressure(tmin=tmin, tmax=tmax)
         ea = atm.actual_vapour_pressure(es=es, rhmean=rhmean)
         self.assertAlmostEqual(ea, 1.78, delta=0.01)
+
+    def test_wind_speed_at_height_of_2_m(self):
+        """Testing Adjusting wind speed data to standard height - Example 14 - pg.56"""
+
+        # Measured wind speed of 3.2 m/s at 10 m above the soil surface
+        u2 = atm.wind_speed_at_2m(uz=3.2, z=10.0)
+        self.assertAlmostEqual(u2, 2.4, delta=0.01)

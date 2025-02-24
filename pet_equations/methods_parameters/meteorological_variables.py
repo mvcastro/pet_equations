@@ -115,3 +115,21 @@ def actual_vapour_pressure(
     """
     ea = es * rhmean / 100
     return ea
+
+
+def wind_speed_at_2m(
+    uz: NDArray[np.floating],
+    z: NDArray[np.floating]
+) -> NDArray[np.floating]:
+    """Wind Speed at 2 m above ground surface [m.s-1]
+
+    Args:
+        uz (NDArray[np.floating]): measured wind speed at z m above ground surface [m s-1]
+        z (NDArray[np.floating]): height of measurement above ground surface [m]
+
+    Returns:
+        NDArray[np.floating]: wind speed at 2 m above ground surface [m.s-1]
+    """
+    u2 = uz * 4.87 / np.log(67.8 * z - 5.42)
+    return u2
+    

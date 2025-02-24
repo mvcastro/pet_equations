@@ -5,9 +5,11 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-from pet_equations.methods import hargreaves
+
 import pet_equations.methods_parameters.astronomical_variables as avars
 import pet_equations.methods_parameters.radiation_variables as rvars
+from pet_equations.methods import hargreaves
+
 
 class TestHargreaves(unittest.TestCase):
     """Test realized from example 20, page 77 of Allen et al. (1998).
@@ -22,7 +24,7 @@ class TestHargreaves(unittest.TestCase):
     tmin = np.array(14.8)
 
     def test_extra_terrestrial_radiation(self):
-        rel_dist_es = avars.relative_distance_earth_sun(doy=self.doy)
+        rel_dist_es = avars.inverse_relative_distance_earth_sun(doy=self.doy)
         solar_dec = avars.solar_declination(doy=self.doy)
         sha = avars.sunset_hour_angle(
             latitude=np.deg2rad(self.latitude),
@@ -78,5 +80,7 @@ class TestHargreaves(unittest.TestCase):
         with self.assertRaises(ValueError):
             hargreaves.calculate(
                 latitude, tmin, tmax,
+                (tmin + tmax) / 2, doy
+            )  
                 (tmin + tmax) / 2, doy
             )  

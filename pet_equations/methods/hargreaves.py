@@ -6,17 +6,16 @@ Source: Allen et al. (1998). Crop evapotranspiration (guidelines for
 """
 
 import numpy as np
-import pandas as pd
 from numpy.typing import ArrayLike, NDArray
 
+import pet_equations.methods_parameters.astronomical_variables as avars
+import pet_equations.methods_parameters.radiation_variables as rvars
 from pet_equations.checking import (
     _check_array_sizes,
     _check_latitude,
     _check_param_float_type,
     _check_param_int_type,
 )
-import pet_equations.methods_parameters.astronomical_variables as avars
-import pet_equations.methods_parameters.radiation_variables as rvars
 
 
 def calculate(
@@ -66,15 +65,11 @@ def calculate(
     sha = avars.sunset_hour_angle(lat_rad, solar_dec)
 
     # Relative distance earth-sun
-    rel_dist_es = avars.relative_distance_earth_sun(doy)
+    rel_dist_es = avars.inverse_relative_distance_earth_sun(doy)
 
     # Extra-Terrestrial Radiation (mm/day)
     et_ra = rvars.extra_terrestrial_radiation(
-        rel_dist_es=rel_dist_es,
-        sha=sha,
-        latitude=lat_rad,
-        solar_dec=solar_dec
+        rel_dist_es=rel_dist_es, sha=sha, latitude=lat_rad, solar_dec=solar_dec
     )
 
-    return 0.0023 * (et_ra * 0.408)  * np.sqrt(tmax - tmin) * (tmean + 17.8)
-
+    return 0.0023 * (et_ra * 0.408) * np.sqrt(tmax - tmin) * (tmean + 17.8)
