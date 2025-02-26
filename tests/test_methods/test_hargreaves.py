@@ -42,17 +42,14 @@ class TestHargreaves(unittest.TestCase):
     def test_hargreaves(self):
         """Hargreaves - Testing the equation"""
 
-        self.assertAlmostEqual(
-            hargreaves.calculate(
+        eto_hargreaves =  hargreaves.calculate(
                 latitude=self.latitude,
                 tmin=self.tmin,
                 tmax=self.tmax,
                 tmean=(self.tmin + self.tmax) / 2,
                 doy=self.doy
-            ),
-            5.0,
-            delta=0.1
-        )
+            )
+        self.assertAlmostEqual(eto_hargreaves, 5.0, delta=0.1)
 
     def test_hargreaves_series(self):
         """Hargreaves - Testing the equation"""
@@ -79,8 +76,9 @@ class TestHargreaves(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             hargreaves.calculate(
-                latitude, tmin, tmax,
-                (tmin + tmax) / 2, doy
-            )  
-                (tmin + tmax) / 2, doy
-            )  
+                latitude=latitude,
+                tmin=tmin,
+                tmax=tmax,
+                tmean=(tmin + tmax) / 2,
+                doy=doy
+            )

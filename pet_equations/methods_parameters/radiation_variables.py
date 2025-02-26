@@ -82,13 +82,15 @@ def net_longwave_radiation(
 
     # Stefan-Boltzmann constant (σ) [MJ/K4.m2.day]
     sigma = 4.903e-9
+    
+    ratio_rs_rso = np.where(rs / rso <= 1.0,  rs / rso, 1.0)
 
     rnl = (
         sigma
         * 0.5
         * (np.power(tmax + 273.16, 4) + np.power(tmin + 273.16, 4))
         * (0.34 - 0.14 * np.sqrt(ea))
-        * (1.35 * (rs / rso) - 0.35)
+        * (1.35 * (ratio_rs_rso) - 0.35)
     )
     return rnl
 
